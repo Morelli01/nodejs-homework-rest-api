@@ -11,6 +11,9 @@ import { getCurrent } from "../../controlers/auth/getCurrent.js";
 import { updateSubscription } from "../../controlers/auth/updateSubscription.js";
 import { upload } from "../../helpers/upload.js";
 import { updateAvatar } from "../../controlers/auth/updateAvatar.js";
+import { verifyEmail } from "../../controlers/auth/verificateEmail.js";
+import { verifyEmailSchema } from "../../schemas/verifyEmailSchema.js";
+import { resendVerifyEmail } from "../../controlers/auth/resendVerifyEmail.js";
 
 const authRouter = Router();
 
@@ -19,6 +22,8 @@ authRouter.post("/login", validateBody(authSchema), login);
 authRouter.post("/logout", auth, logout);
 authRouter.get("/current", auth, validateBody(authSchema), getCurrent);
 authRouter.patch('/:id/subscription', auth, isValidId, validateBody(subscribtionSchema), updateSubscription);
-authRouter.patch("/avatars", auth, upload.single('avatar'), updateAvatar)
+authRouter.patch("/avatars", auth, upload.single('avatar'), updateAvatar);
+authRouter.get("/verify/:verificationToken", verifyEmail);
+authRouter.post("/verify", validateBody(verifyEmailSchema), resendVerifyEmail);
 
 export default authRouter;
